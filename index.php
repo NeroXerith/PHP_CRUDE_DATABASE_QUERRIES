@@ -55,8 +55,8 @@ if ($rs = $conn->query($sql)) {
             $disp .= '<tr>';
             $disp .= '<td>' . $row['id'] . '</td>';
             $disp .= '<td>' . $row['studentName'] . '</td>';
-            $disp .= '<td>' . $row['studentSubject'] . '</td>';
             $disp .= '<td>' . $row['studentSection'] . '</td>';
+            $disp .= '<td>' . $row['studentSubject'] . '</td>';
             $disp .= '<td>' . $row['studentGrade'] . '</td>';
             $disp .= '<td>' . $row['studentSession'] . '</td>';
             $disp .= '</tr>';
@@ -127,8 +127,9 @@ if ($rs = $conn->query($sql)) {
                 <tr>
                     <th>#</th>
                     <th>Student Name</th>
-                    <th>Subject</th>
                     <th>Section</th>
+                    <th>Subject</th>
+
                     <th>Grade</th>
                     <th>Session</th>
                 </tr>
