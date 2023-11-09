@@ -2,7 +2,7 @@
 $user ="root";
 $pass ="";
 $server="localhost";
-$dbname="bryle";
+$dbname="records";
 
 $conn = new mysqli($server,$user,$pass,$dbname);
 if($conn->connect_error){
