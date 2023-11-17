@@ -1,7 +1,7 @@
 <?php
 
 include('config.php');
-$disp='';  $id=''; $actType='';
+$disp='';  $id=''; $actType=''; $errorMessage = '';
 $sql ="SELECT EmployeeID, EmployeeFN, EmployeeMN, EmployeeLN,JobTitle FROM employees";
 //execute query
 if($rs=$conn->query($sql)){
@@ -51,6 +51,8 @@ if(isset($_GET['token']) && $_GET['action'] === 'edit'){
 else{
 	$btn='<input class="btn btn-primary" type="submit" name="btnSubmit" value="SAVE INFORMATION">';
 }
+
+include('get_messages.php'); // Display alerts messages
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -61,6 +63,11 @@ else{
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+	<style>
+		body{
+			margin: 50px;
+		}
+	</style>
   </head>
   <body>
 	<center>
@@ -71,8 +78,9 @@ else{
 					<input type="text" name="Fname" placeholder="Enter First Name" value="<?php echo $Fname?>" required>
 					<input type="text" name="Mname" placeholder="Enter Middle Name" value="<?php echo $Mname?>" required>
 					<input type="text" name="Lname" placeholder="Enter Last Name" value="<?php echo $Lname?>" required>
+					<br/><br/>
 					<input type="email" name="Email" placeholder="Enter Email" value="<?php echo $Email?>" required>
-					<input type="text" name="Phone" placeholder="Enter Contact No" value="<?php echo $Phone?>"><br/>
+					<input type="text" name="Phone" placeholder="Enter Contact No" value="<?php echo $Phone?>">
 					<select  name="JobTitle">
 <?php
 	$sql="SELECT DISTINCT(JobTitle) FROM employees";
@@ -87,7 +95,7 @@ else{
 
  ?>
 					</select>
-					
+	</br>	</br>
 					<?php 
 						echo $btn;
 					?>
