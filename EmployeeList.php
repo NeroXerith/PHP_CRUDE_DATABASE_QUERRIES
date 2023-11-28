@@ -2,6 +2,32 @@
 
 include('config.php');
 $disp='';  $id=''; $actType=''; $errorMessage = '';
+
+if(isset($_COOKIE['token'])){
+	$id=$_COOKIE['token'];
+	$sql ="SELECT * FROM users_table WHERE user_id=$id";
+	if($rs=$conn->query($sql)){
+	  if($rs->num_rows>0){
+		$row=$rs->fetch_assoc();
+		$usertype=$row['user_type'];
+		$userid=$row['user_id'];
+		switch($usertype){
+		//  case 1 : header("location:EmployeeList.php"); break;
+		  case 2 : header("location:staff_dash.php"); break;
+		  case 3 : header("location:guest_dash.php"); break;
+		}
+	  }else{
+		  // redirect if token not exist
+		  header("location:logout.php");
+	  }
+	}
+	else{
+		  echo $conn->error;
+	}
+  }else{
+	  header("location:logout.php");
+  }
+
 $sql ="SELECT EmployeeID, EmployeeFN, EmployeeMN, EmployeeLN,JobTitle FROM employees";
 //execute query
 if($rs=$conn->query($sql)){
@@ -44,12 +70,12 @@ if(isset($_GET['token']) && $_GET['action'] === 'edit'){
 	}else{
 		echo $conn->error;
 	}
-	$btn='<input class="btn btn-warning" type="submit" name="btnUpdate" value="UPDATE INFORMATION">';
-	$updateInputs='<input type="text" name="EId" value="{$Id}">
+	$btn='<input class="btn btn-warning" style="width: 200px;" type="submit" name="btnUpdate" value="UPDATE INFORMATION">';
+	$updateInputs='<input type="text" style="width: 200px;" name="EId" value="{$Id}">
 	<input type="text" name="actionType" value="<?php echo $actType?>">';
 }
 else{
-	$btn='<input class="btn btn-primary" type="submit" name="btnSubmit" value="SAVE INFORMATION">';
+	$btn='<input class="btn btn-primary" style="width: 200px;" type="submit" name="btnSubmit" value="SAVE INFORMATION">';
 }
 
 include('get_messages.php'); // Display alerts messages
@@ -65,23 +91,27 @@ include('get_messages.php'); // Display alerts messages
 	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
 	<style>
 		body{
-			margin: 50px;
+            margin: 50px;
+		}
+		form{
+			display: flex;
+            justify-content: center;
+            align-items: center;
 		}
 	</style>
   </head>
   <body>
 	<center>
 
-		<form  action="save_employee.php" method="post">	
-					<input type="text" name="EId" value="<?php echo $id?>" hidden>
-					<input type="text" name="actionType" value="<?php echo $actType?>" hidden>	
-					<input type="text" name="Fname" placeholder="Enter First Name" value="<?php echo $Fname?>" required>
-					<input type="text" name="Mname" placeholder="Enter Middle Name" value="<?php echo $Mname?>" required>
-					<input type="text" name="Lname" placeholder="Enter Last Name" value="<?php echo $Lname?>" required>
-					<br/><br/>
-					<input type="email" name="Email" placeholder="Enter Email" value="<?php echo $Email?>" required>
-					<input type="text" name="Phone" placeholder="Enter Contact No" value="<?php echo $Phone?>">
-					<select  name="JobTitle">
+		<form  class="row g-2" action="save_employee.php" method="post">	
+					<input type="text" name="EId" class="form-control" value="<?php echo $id?>" hidden>
+					<input type="text" name="actionType" class="form-control" value="<?php echo $actType?>" hidden>	
+					<input type="text" name="Fname" class="form-control" placeholder="Enter First Name" value="<?php echo $Fname?>" required>
+					<input type="text" name="Mname" class="form-control" placeholder="Enter Middle Name" value="<?php echo $Mname?>" required>
+					<input type="text" name="Lname" class="form-control"placeholder="Enter Last Name" value="<?php echo $Lname?>" required>
+					<input type="email" name="Email" class="form-control" placeholder="Enter Email" value="<?php echo $Email?>" required>
+					<input type="text" name="Phone" class="form-control" placeholder="Enter Contact No" value="<?php echo $Phone?>">
+					<select class="form-select" name="JobTitle">
 <?php
 	$sql="SELECT DISTINCT(JobTitle) FROM employees";
 		if($rs=$conn->query($sql)){
